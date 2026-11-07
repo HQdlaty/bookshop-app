@@ -3,11 +3,10 @@ import './home.css';
 
 export const title = 'Home';
 
-export function mount(container, ctx) {
-  // The fragment is a static, trusted template. User content is only ever set via textContent.
-  container.innerHTML = html;
-
+// Static content only: this page never queries the database.
+export function mount(container) {
+  container.innerHTML = html; // static, trusted fragment
   return function unmount() {
-    // Nothing to clean up yet. Add listeners with { signal: ctx.signal } and they are removed automatically.
+    // Nothing to clean up.
   };
 }

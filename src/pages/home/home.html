@@ -1,5 +1,107 @@
-<section class="page page-home container py-5">
-  <h1 class="h2 mb-3"><i class="bi bi-house me-2" aria-hidden="true"></i>Welcome to Bookshop</h1>
-  <p class="lead text-body-secondary">Placeholder for the landing page: featured books and search will live here.</p>
-  <a class="btn btn-primary" href="/books"><i class="bi bi-journal-bookmark me-1" aria-hidden="true"></i>Browse books</a>
-</section>
+<div class="page page-home">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container py-5">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-7 hero-content">
+          <p class="hero-eyebrow text-uppercase fw-semibold small mb-2">
+            <i class="bi bi-book-half me-1" aria-hidden="true"></i>Book catalog
+          </p>
+          <h1 id="hero-title" class="display-5 fw-bold mb-3">Find your next favourite book</h1>
+          <p class="lead text-body-secondary mb-4">
+            Browse the Bookshop catalog, search by title or author, and read what other readers think.
+            Create a free account to share your own reviews.
+          </p>
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <a class="btn btn-primary btn-lg" href="/books">
+              <i class="bi bi-journal-bookmark me-2" aria-hidden="true"></i>Browse books
+            </a>
+            <a class="btn btn-outline-primary btn-lg" href="/login?mode=register">
+              <i class="bi bi-person-plus me-2" aria-hidden="true"></i>Create an account
+            </a>
+          </div>
+          <p class="mb-0 text-body-secondary">Already a member? <a href="/login">Log in</a></p>
+        </div>
+        <div class="col-lg-5 d-none d-lg-block" aria-hidden="true">
+          <div class="hero-art"><i class="bi bi-book-half"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container py-5" aria-labelledby="features-title">
+    <h2 id="features-title" class="h3 text-center mb-4">Everything you need to explore books</h2>
+    <ul class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 list-unstyled mb-0">
+      <li class="col">
+        <article class="card h-100 border-0 bg-body-tertiary">
+          <div class="card-body">
+            <span class="feature-icon mb-3" aria-hidden="true"><i class="bi bi-journal-bookmark"></i></span>
+            <h3 class="h5 card-title">Browse the catalog</h3>
+            <p class="card-text text-body-secondary mb-0">Explore books with covers, authors, descriptions and categories, all in one place.</p>
+          </div>
+        </article>
+      </li>
+      <li class="col">
+        <article class="card h-100 border-0 bg-body-tertiary">
+          <div class="card-body">
+            <span class="feature-icon mb-3" aria-hidden="true"><i class="bi bi-search"></i></span>
+            <h3 class="h5 card-title">Search and filter</h3>
+            <p class="card-text text-body-secondary mb-0">Find a title fast by searching, or narrow the list down by category.</p>
+          </div>
+        </article>
+      </li>
+      <li class="col">
+        <article class="card h-100 border-0 bg-body-tertiary">
+          <div class="card-body">
+            <span class="feature-icon mb-3" aria-hidden="true"><i class="bi bi-star"></i></span>
+            <h3 class="h5 card-title">Read and write reviews</h3>
+            <p class="card-text text-body-secondary mb-0">See honest ratings from other readers and add your own once you have an account.</p>
+          </div>
+        </article>
+      </li>
+      <li class="col">
+        <article class="card h-100 border-0 bg-body-tertiary">
+          <div class="card-body">
+            <span class="feature-icon mb-3" aria-hidden="true"><i class="bi bi-person-circle"></i></span>
+            <h3 class="h5 card-title">Your own profile</h3>
+            <p class="card-text text-body-secondary mb-0">Pick a display name and an avatar so other readers know who wrote a review.</p>
+          </div>
+        </article>
+      </li>
+    </ul>
+  </section>
+
+  <section class="border-top bg-body-tertiary" aria-labelledby="steps-title">
+    <div class="container py-5">
+      <h2 id="steps-title" class="h3 text-center mb-4">How it works</h2>
+      <ol class="row row-cols-1 row-cols-md-3 g-4 list-unstyled mb-0 steps">
+        <li class="col d-flex gap-3">
+          <span class="step-number" aria-hidden="true">1</span>
+          <div>
+            <h3 class="h6 mb-1">Browse</h3>
+            <p class="text-body-secondary mb-0">No account needed to look around the catalog.</p>
+          </div>
+        </li>
+        <li class="col d-flex gap-3">
+          <span class="step-number" aria-hidden="true">2</span>
+          <div>
+            <h3 class="h6 mb-1">Join</h3>
+            <p class="text-body-secondary mb-0">Register with your email and choose a display name.</p>
+          </div>
+        </li>
+        <li class="col d-flex gap-3">
+          <span class="step-number" aria-hidden="true">3</span>
+          <div>
+            <h3 class="h6 mb-1">Review</h3>
+            <p class="text-body-secondary mb-0">Rate the books you have read and tell others what you thought.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="container py-5 text-center" aria-labelledby="cta-title">
+    <h2 id="cta-title" class="h4 mb-2">Ready to dive in?</h2>
+    <p class="text-body-secondary mb-3">No cart, no payments. Just books and the people who read them.</p>
+    <a class="btn btn-primary" href="/books"><i class="bi bi-journal-bookmark me-2" aria-hidden="true"></i>Browse books</a>
+  </section>
+</div>

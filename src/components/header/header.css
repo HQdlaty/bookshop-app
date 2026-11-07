@@ -1,5 +1,9 @@
-/* The toggle is a <button> styled as a nav link; reset the button chrome. */
+/* Toggles are <button>s styled as nav links; reset the button chrome. */
 #site-header .navbar .dropdown-toggle.nav-link {
   background: none;
   border: 0;
+}
+
+#site-header .user-name {
+  max-width: 12rem;
 }
