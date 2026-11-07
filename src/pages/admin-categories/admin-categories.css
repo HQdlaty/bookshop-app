@@ -1,1 +1,9 @@
-/* Styles for the Manage categories page. Scope every rule under .page-admin-categories. */
+/* Category management. Every rule is scoped under .page-admin-categories. */
+.page-admin-categories td[data-name-cell] {
+  min-width: 14rem;
+  overflow-wrap: anywhere;
+}
+
+.page-admin-categories .actions {
+  white-space: nowrap;
+}

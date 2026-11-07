@@ -4,6 +4,7 @@ export function toDbMessage(error) {
   const message = String(error?.message ?? '');
 
   if (code === '42501') return 'You do not have permission to do that.';
+  if (code === 'NO_ROWS_AFFECTED') return 'That item no longer exists, or you do not have permission to change it.';
   if (code === 'PGRST301' || code === 'PGRST303' || /\bjwt\b/i.test(message)) {
     return 'Your session has expired. Please log in again.';
   }

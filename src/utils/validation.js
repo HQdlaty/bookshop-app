@@ -2,6 +2,7 @@ export const DISPLAY_NAME_MAX = 100;
 export const PASSWORD_MIN = 8;
 export const PASSWORD_MAX = 72; // bcrypt (used by Supabase Auth) ignores everything past 72 bytes
 export const EMAIL_MAX = 254;
+export const CATEGORY_NAME_MAX = 100;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -39,5 +40,14 @@ export function validateLoginPassword(value) {
 export function validatePasswordConfirmation(password, confirmation) {
   if (!confirmation) return 'Please confirm your password.';
   if (password !== confirmation) return 'Passwords do not match.';
+  return '';
+}
+
+export function validateCategoryName(value) {
+  const name = value.trim();
+  if (!name) return 'Category name is required.';
+  if (Array.from(name).length > CATEGORY_NAME_MAX) {
+    return `Category name must be at most ${CATEGORY_NAME_MAX} characters.`;
+  }
   return '';
 }

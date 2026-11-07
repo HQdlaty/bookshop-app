@@ -1,4 +1,35 @@
 <section class="page page-admin-categories container py-5">
-  <h1 class="h2 mb-3"><i class="bi bi-tags me-2" aria-hidden="true"></i>Manage categories</h1>
-  <p class="lead text-body-secondary">Placeholder for category management.</p>
+  <div class="d-flex flex-wrap align-items-start justify-content-between gap-2 mb-4">
+    <div>
+      <h1 class="h2 mb-1"><i class="bi bi-tags me-2" aria-hidden="true"></i>Manage categories</h1>
+      <p class="text-body-secondary mb-0">Group books into categories. Names must be unique, ignoring upper and lower case.</p>
+    </div>
+    <a class="btn btn-outline-secondary" href="/admin"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Dashboard</a>
+  </div>
+
+  <form class="card card-body mb-4" data-add-form method="post" novalidate>
+    <label for="new-category" class="form-label fw-semibold">Add a category</label>
+    <div class="input-group has-validation">
+      <input id="new-category" name="name" type="text" class="form-control" autocomplete="off" aria-describedby="new-category-error" />
+      <button type="submit" class="btn btn-primary" data-add-button>
+        <span class="spinner-border spinner-border-sm me-1" aria-hidden="true" hidden></span><i class="bi bi-plus-lg me-1" aria-hidden="true" data-icon></i>Add
+      </button>
+      <div id="new-category-error" class="invalid-feedback" data-add-error></div>
+    </div>
+  </form>
+
+  <div data-status></div>
+
+  <div class="table-responsive" data-table-wrap hidden>
+    <table class="table align-middle">
+      <caption class="visually-hidden">Categories</caption>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col" class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody data-rows></tbody>
+    </table>
+  </div>
 </section>
