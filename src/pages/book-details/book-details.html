@@ -1,6 +1,41 @@
 <section class="page page-book-details container py-5">
-  <h1 class="h2 mb-3"><i class="bi bi-book me-2" aria-hidden="true"></i>Book details</h1>
-  <p class="lead text-body-secondary">Placeholder for a single book with its reviews.</p>
-  <p>Book id: <strong data-book-id></strong></p>
-  <a href="/books"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Back to books</a>
+  <p class="mb-4">
+    <a href="/books" class="link-secondary text-decoration-none"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Back to books</a>
+  </p>
+
+  <div data-state></div>
+
+  <article data-book hidden>
+    <div class="row g-4 g-lg-5">
+      <div class="col-12 col-sm-5 col-md-4" data-cover></div>
+      <div class="col">
+        <h1 class="h2 mb-1" data-title></h1>
+        <p class="lead text-body-secondary mb-3" data-author></p>
+        <p class="mb-3" data-category-wrap hidden><span class="badge text-bg-secondary fs-6 fw-normal text-wrap" data-category></span></p>
+
+        <dl class="row mb-4">
+          <dt class="col-5 col-sm-4 col-lg-3" data-row="price">Price</dt>
+          <dd class="col-7 col-sm-8 col-lg-9" data-price></dd>
+          <dt class="col-5 col-sm-4 col-lg-3" data-row="year">Published</dt>
+          <dd class="col-7 col-sm-8 col-lg-9" data-year></dd>
+          <dt class="col-5 col-sm-4 col-lg-3" data-row="isbn">ISBN</dt>
+          <dd class="col-7 col-sm-8 col-lg-9" data-isbn></dd>
+        </dl>
+
+        <div data-description-wrap hidden>
+          <h2 class="h5">About this book</h2>
+          <p class="description" data-description></p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-5" />
+
+    <section aria-labelledby="reviews-title">
+      <h2 id="reviews-title" class="h4 mb-3"><i class="bi bi-chat-square-text me-2" aria-hidden="true"></i>Reviews</h2>
+      <div class="border rounded text-center text-body-secondary p-4" data-reviews>
+        Reviews will appear here soon.
+      </div>
+    </section>
+  </article>
 </section>

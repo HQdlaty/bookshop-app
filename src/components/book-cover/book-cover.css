@@ -1,0 +1,18 @@
+/* 3:4 portrait frame shared by the catalog cards, the details page and the admin form. */
+.book-cover {
+  --bs-aspect-ratio: 133.333%;
+  background: var(--bs-secondary-bg);
+  overflow: hidden;
+}
+
+.book-cover > img {
+  object-fit: cover;
+}
+
+.book-cover .cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bs-secondary-color);
+  font-size: 3rem;
+}

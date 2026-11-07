@@ -166,6 +166,11 @@ async function render(pathname) {
     query: new URLSearchParams(location.search),
     signal: controller.signal,
     navigate,
+    setQuery,
+    // Pages call this after loading data (e.g. a book title). Ignored if the user has already moved on.
+    setTitle: (text) => {
+      if (id === renderId) setDocumentTitle(text);
+    },
   };
 
   try {
@@ -177,9 +182,23 @@ async function render(pathname) {
     showError('Something went wrong while showing this page.');
   }
 
-  const pageTitle = typeof page.title === 'function' ? page.title(ctx) : page.title;
-  document.title = pageTitle ? `${pageTitle} | ${APP_NAME}` : APP_NAME;
+  setDocumentTitle(typeof page.title === 'function' ? page.title(ctx) : page.title);
   onNavigate(pathname);
+}
+
+function setDocumentTitle(text) {
+  document.title = text ? `${text} | ${APP_NAME}` : APP_NAME;
+}
+
+/**
+ * Updates the query string of the current page without re-mounting it (filters, pages).
+ * Back/Forward still work: the router re-renders the page from the URL on popstate.
+ */
+export function setQuery(params, { replace = false } = {}) {
+  const search = new URLSearchParams(params).toString();
+  const target = location.pathname + (search ? `?${search}` : '') + location.hash;
+  if (target === location.pathname + location.search + location.hash) return;
+  history[replace ? 'replaceState' : 'pushState'](null, '', target);
 }
 
 export function navigate(to, { replace = false } = {}) {

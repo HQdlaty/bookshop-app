@@ -1,1 +1,10 @@
-/* Styles for the Book details page. Scope every rule under .page-book-details. */
+/* Book details. Every rule is scoped under .page-book-details. */
+.page-book-details .description {
+  white-space: pre-line; /* keep the line breaks the admin typed */
+  overflow-wrap: anywhere;
+}
+
+.page-book-details [data-title],
+.page-book-details [data-author] {
+  overflow-wrap: anywhere;
+}

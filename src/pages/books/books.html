@@ -1,5 +1,27 @@
 <section class="page page-books container py-5">
-  <h1 class="h2 mb-3"><i class="bi bi-journal-bookmark me-2" aria-hidden="true"></i>Books</h1>
-  <p class="lead text-body-secondary">Placeholder for the catalog: browse, search and filter by category.</p>
-  <a class="btn btn-outline-primary" href="/books/1"><i class="bi bi-book me-1" aria-hidden="true"></i>Sample book (id 1)</a>
+  <h1 class="h2 mb-1"><i class="bi bi-journal-bookmark me-2" aria-hidden="true"></i>Books</h1>
+  <p class="text-body-secondary mb-4">Browse the catalog, search by title or author, or filter by category.</p>
+
+  <form class="row g-2 mb-4" role="search" data-filter-form novalidate>
+    <div class="col-12 col-md-6">
+      <label for="book-search" class="visually-hidden">Search by title or author</label>
+      <div class="input-group">
+        <span class="input-group-text" aria-hidden="true"><i class="bi bi-search"></i></span>
+        <input id="book-search" name="search" type="search" class="form-control" placeholder="Search by title or author" autocomplete="off" maxlength="100" />
+      </div>
+    </div>
+    <div class="col-8 col-md-4">
+      <label for="book-category" class="visually-hidden">Category</label>
+      <select id="book-category" name="category" class="form-select">
+        <option value="">All categories</option>
+      </select>
+    </div>
+    <div class="col-4 col-md-2 d-grid">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+
+  <p class="text-body-secondary small mb-3" data-summary role="status"></p>
+  <div data-results></div>
+  <div class="mt-4" data-pagination></div>
 </section>
