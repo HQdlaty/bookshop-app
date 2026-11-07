@@ -1,4 +1,88 @@
 <section class="page page-login container py-5">
-  <h1 class="h2 mb-3"><i class="bi bi-box-arrow-in-right me-2" aria-hidden="true"></i>Log in</h1>
-  <p class="lead text-body-secondary">Placeholder for the login and registration forms.</p>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-9 col-lg-6 col-xl-5">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h1 class="h3 mb-1">Welcome to Bookshop</h1>
+          <p class="text-body-secondary mb-4">Log in to write reviews, or create a free account.</p>
+
+          <ul class="nav nav-pills nav-fill mb-4" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="tab-login" type="button" role="tab" data-bs-toggle="pill" data-bs-target="#panel-login" aria-controls="panel-login" aria-selected="true">
+                <i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i>Log in
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="tab-register" type="button" role="tab" data-bs-toggle="pill" data-bs-target="#panel-register" aria-controls="panel-register" aria-selected="false" tabindex="-1">
+                <i class="bi bi-person-plus me-1" aria-hidden="true"></i>Register
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <!-- Log in -->
+            <div class="tab-pane show active" id="panel-login" role="tabpanel" aria-labelledby="tab-login" tabindex="0">
+              <form id="login-form" method="post" novalidate>
+                <div data-alert-region role="alert"></div>
+
+                <div class="mb-3">
+                  <label for="login-email" class="form-label">Email</label>
+                  <input id="login-email" name="email" type="email" class="form-control" autocomplete="email" maxlength="254" required aria-describedby="login-email-error" />
+                  <div id="login-email-error" class="invalid-feedback" data-error-for="email"></div>
+                </div>
+
+                <div class="mb-4">
+                  <label for="login-password" class="form-label">Password</label>
+                  <input id="login-password" name="password" type="password" class="form-control" autocomplete="current-password" required aria-describedby="login-password-error" />
+                  <div id="login-password-error" class="invalid-feedback" data-error-for="password"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" data-submit>
+                  <span class="spinner-border spinner-border-sm me-2" aria-hidden="true" hidden></span><span data-label>Log in</span>
+                </button>
+              </form>
+            </div>
+
+            <!-- Register -->
+            <div class="tab-pane" id="panel-register" role="tabpanel" aria-labelledby="tab-register" tabindex="0">
+              <form id="register-form" method="post" novalidate>
+                <div data-alert-region role="alert"></div>
+                <div data-info-region role="status"></div>
+
+                <div class="mb-3">
+                  <label for="register-display-name" class="form-label">Display name</label>
+                  <input id="register-display-name" name="displayName" type="text" class="form-control" autocomplete="nickname" maxlength="100" required aria-describedby="register-display-name-help register-display-name-error" />
+                  <div id="register-display-name-help" class="form-text">Shown next to your reviews. Up to 100 characters.</div>
+                  <div id="register-display-name-error" class="invalid-feedback" data-error-for="displayName"></div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="register-email" class="form-label">Email</label>
+                  <input id="register-email" name="email" type="email" class="form-control" autocomplete="email" maxlength="254" required aria-describedby="register-email-error" />
+                  <div id="register-email-error" class="invalid-feedback" data-error-for="email"></div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="register-password" class="form-label">Password</label>
+                  <input id="register-password" name="password" type="password" class="form-control" autocomplete="new-password" required aria-describedby="register-password-help register-password-error" />
+                  <div id="register-password-help" class="form-text">8 to 72 characters.</div>
+                  <div id="register-password-error" class="invalid-feedback" data-error-for="password"></div>
+                </div>
+
+                <div class="mb-4">
+                  <label for="register-confirm" class="form-label">Confirm password</label>
+                  <input id="register-confirm" name="confirm" type="password" class="form-control" autocomplete="new-password" required aria-describedby="register-confirm-error" />
+                  <div id="register-confirm-error" class="invalid-feedback" data-error-for="confirm"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" data-submit>
+                  <span class="spinner-border spinner-border-sm me-2" aria-hidden="true" hidden></span><span data-label>Create account</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

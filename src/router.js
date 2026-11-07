@@ -1,19 +1,20 @@
 const APP_NAME = 'Bookshop';
 
 // Canonical routes. Pages are loaded lazily so each page's CSS and JS is fetched on demand.
+// access: 'private' routes need a session; anything else is public. (Role checks come later.)
 const routes = [
   { path: '/', load: () => import('./pages/home/home.js') },
   { path: '/books', load: () => import('./pages/books/books.js') },
   { path: '/books/:id', load: () => import('./pages/book-details/book-details.js') },
   { path: '/login', load: () => import('./pages/login/login.js') },
-  { path: '/profile', load: () => import('./pages/profile/profile.js') },
-  { path: '/reviews', load: () => import('./pages/reviews/reviews.js') },
-  { path: '/admin', load: () => import('./pages/admin/admin.js') },
-  { path: '/admin/books', load: () => import('./pages/admin-books/admin-books.js') },
-  { path: '/admin/books/add', load: () => import('./pages/book-form/book-form.js') },
-  { path: '/admin/books/:id/edit', load: () => import('./pages/book-form/book-form.js') },
-  { path: '/admin/categories', load: () => import('./pages/admin-categories/admin-categories.js') },
-  { path: '/admin/users', load: () => import('./pages/admin-users/admin-users.js') },
+  { path: '/profile', access: 'private', load: () => import('./pages/profile/profile.js') },
+  { path: '/reviews', access: 'private', load: () => import('./pages/reviews/reviews.js') },
+  { path: '/admin', access: 'private', load: () => import('./pages/admin/admin.js') },
+  { path: '/admin/books', access: 'private', load: () => import('./pages/admin-books/admin-books.js') },
+  { path: '/admin/books/add', access: 'private', load: () => import('./pages/book-form/book-form.js') },
+  { path: '/admin/books/:id/edit', access: 'private', load: () => import('./pages/book-form/book-form.js') },
+  { path: '/admin/categories', access: 'private', load: () => import('./pages/admin-categories/admin-categories.js') },
+  { path: '/admin/users', access: 'private', load: () => import('./pages/admin-users/admin-users.js') },
 ].map((route) => ({ ...route, ...compile(route.path) }));
 
 const loadNotFound = () => import('./pages/not-found/not-found.js');
@@ -46,8 +47,11 @@ function match(pathname) {
 
 let outlet = null;
 let onNavigate = () => {};
+let ready = Promise.resolve(); // resolves once the session has been restored
+let getSession = async () => null;
 let current = null; // { unmount, controller } of the mounted page
 let renderId = 0; // guards against out-of-order async page loads
+let activeAccess = 'public'; // access level of the route being shown (or loading)
 
 function teardown() {
   if (!current) return;
@@ -68,9 +72,52 @@ function showError(message) {
   outlet.replaceChildren(alert);
 }
 
+function showLoading() {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'd-flex justify-content-center py-5';
+  const spinner = document.createElement('div');
+  spinner.className = 'spinner-border text-primary';
+  spinner.setAttribute('role', 'status');
+  const label = document.createElement('span');
+  label.className = 'visually-hidden';
+  label.textContent = 'Loading…';
+  spinner.append(label);
+  wrapper.append(spinner);
+  outlet.replaceChildren(wrapper);
+}
+
+async function hasSession() {
+  try {
+    return Boolean(await getSession());
+  } catch (error) {
+    console.error('Could not read the session', error);
+    return false;
+  }
+}
+
+// Sends the visitor to the login page and remembers where they were going.
+function redirectToLogin() {
+  const returnTo = location.pathname + location.search;
+  navigate(`/login?next=${encodeURIComponent(returnTo)}`, { replace: true });
+}
+
 async function render(pathname) {
   const id = ++renderId;
   const matched = match(pathname);
+  activeAccess = matched?.route.access ?? 'public';
+
+  // Wait for the session to be restored before deciding anything about access.
+  await ready;
+  if (id !== renderId) return;
+
+  if (activeAccess === 'private') {
+    const signedIn = await hasSession();
+    if (id !== renderId) return;
+    if (!signedIn) {
+      redirectToLogin();
+      return;
+    }
+  }
 
   let page;
   try {
@@ -125,6 +172,16 @@ export function navigate(to, { replace = false } = {}) {
   render(url.pathname);
 }
 
+/**
+ * Re-checks access for the page being shown, without re-mounting it.
+ * Call it when the signed-in user changes (e.g. the session expired or was ended in another tab).
+ */
+export async function enforceAccess() {
+  if (activeAccess !== 'private') return;
+  const signedIn = await hasSession();
+  if (!signedIn && activeAccess === 'private') redirectToLogin();
+}
+
 function onClick(event) {
   // Leave modified clicks (new tab/window, download) and non-primary buttons to the browser.
   if (event.defaultPrevented || event.button !== 0) return;
@@ -146,12 +203,22 @@ function onClick(event) {
   navigate(url.pathname + url.search + url.hash);
 }
 
+/**
+ * options:
+ * - outlet: element pages are mounted into
+ * - onNavigate(pathname): called after each page is shown
+ * - ready: promise that resolves when the session has been restored (the first render waits for it)
+ * - getSession(): async, returns the current session or null (used by the private-route guard)
+ */
 export function startRouter(options) {
   outlet = options.outlet;
   onNavigate = options.onNavigate ?? onNavigate;
+  ready = options.ready ?? ready;
+  getSession = options.getSession ?? getSession;
 
   document.addEventListener('click', onClick);
   window.addEventListener('popstate', () => render(location.pathname));
 
+  showLoading();
   render(location.pathname);
 }
