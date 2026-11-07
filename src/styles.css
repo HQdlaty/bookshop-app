@@ -1,1 +1,7 @@
 /* Global styles. Bootstrap is imported in main.js. */
+
+/* Toasts sit below the sticky navbar, above everything else. */
+.toast-regions {
+  top: 4.5rem;
+  z-index: 1100;
+}
