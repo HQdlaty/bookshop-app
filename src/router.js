@@ -55,9 +55,13 @@ let checkAdmin = async () => false;
 let current = null; // { unmount, controller } of the mounted page
 let renderId = 0; // guards against out-of-order async page loads
 let activeAccess = 'public'; // 'public' | 'private' | 'admin': access level of the route being shown (or loading)
+let leaveGuard = null; // set by a page with unsaved changes: () => boolean | Promise<boolean>, false blocks leaving
+let guardOpen = false; // a leave prompt is already showing
+let shownUrl = location.pathname + location.search; // URL of the page currently on screen
 
 function teardown() {
   if (!current) return;
+  leaveGuard = null;
   current.controller.abort(); // removes every listener registered with ctx.signal
   try {
     current.unmount?.();
@@ -110,11 +114,12 @@ async function hasAdminRole() {
 // Sends the visitor to the login page and remembers where they were going.
 function redirectToLogin() {
   const returnTo = location.pathname + location.search;
-  navigate(`/login?next=${encodeURIComponent(returnTo)}`, { replace: true });
+  navigate(`/login?next=${encodeURIComponent(returnTo)}`, { replace: true, force: true });
 }
 
 async function render(pathname) {
   const id = ++renderId;
+  const search = location.search;
   const matched = match(pathname);
   activeAccess = matched?.route.access ?? 'public';
 
@@ -163,10 +168,14 @@ async function render(pathname) {
   const ctx = {
     path: pathname,
     params,
-    query: new URLSearchParams(location.search),
+    query: new URLSearchParams(search),
     signal: controller.signal,
     navigate,
     setQuery,
+    // A page with unsaved changes registers a function that asks the user before they leave.
+    setLeaveGuard: (guard) => {
+      if (id === renderId) leaveGuard = guard;
+    },
     // Pages call this after loading data (e.g. a book title). Ignored if the user has already moved on.
     setTitle: (text) => {
       if (id === renderId) setDocumentTitle(text);
@@ -183,6 +192,7 @@ async function render(pathname) {
   }
 
   setDocumentTitle(typeof page.title === 'function' ? page.title(ctx) : page.title);
+  shownUrl = pathname + search;
   onNavigate(pathname);
 }
 
@@ -199,17 +209,37 @@ export function setQuery(params, { replace = false } = {}) {
   const target = location.pathname + (search ? `?${search}` : '') + location.hash;
   if (target === location.pathname + location.search + location.hash) return;
   history[replace ? 'replaceState' : 'pushState'](null, '', target);
+  shownUrl = location.pathname + location.search;
 }
 
-export function navigate(to, { replace = false } = {}) {
+/** Asks the page being shown (if it has unsaved changes) whether it is OK to leave. Resolves true when it is. */
+export async function canLeavePage() {
+  if (!leaveGuard) return true;
+  if (guardOpen) return false; // one prompt at a time
+  guardOpen = true;
+  try {
+    return Boolean(await leaveGuard());
+  } catch (error) {
+    console.error('Leave guard failed', error);
+    return true;
+  } finally {
+    guardOpen = false;
+  }
+}
+
+/** `force` skips the unsaved-changes prompt (used after saving, and for access redirects). */
+export async function navigate(to, { replace = false, force = false } = {}) {
   const url = new URL(to, location.href);
-  if (url.origin !== location.origin) {
+  const sameOrigin = url.origin === location.origin;
+  const target = url.pathname + url.search + url.hash;
+  if (sameOrigin && target === location.pathname + location.search + location.hash) return;
+
+  if (!force && !(await canLeavePage())) return;
+
+  if (!sameOrigin) {
     location.assign(url);
     return;
   }
-  const target = url.pathname + url.search + url.hash;
-  if (target === location.pathname + location.search + location.hash) return;
-
   history[replace ? 'replaceState' : 'pushState'](null, '', target);
   window.scrollTo(0, 0);
   render(url.pathname);
@@ -269,7 +299,16 @@ export function startRouter(options) {
   checkAdmin = options.isAdmin ?? checkAdmin;
 
   document.addEventListener('click', onClick);
-  window.addEventListener('popstate', () => render(location.pathname));
+  window.addEventListener('popstate', async () => {
+    const target = location.pathname + location.search + location.hash;
+    if (leaveGuard && target !== shownUrl) {
+      // Back/Forward already changed the URL. Put it back while we ask, then go on only if allowed.
+      history.pushState(null, '', shownUrl);
+      if (await canLeavePage()) navigate(target, { force: true });
+      return;
+    }
+    render(location.pathname);
+  });
 
   showLoading();
   render(location.pathname);

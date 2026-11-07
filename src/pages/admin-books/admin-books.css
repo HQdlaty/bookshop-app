@@ -1,1 +1,9 @@
-/* Styles for the Manage books page. Scope every rule under .page-admin-books. */
+/* Admin book list. Every rule is scoped under .page-admin-books. */
+.page-admin-books td.title-cell {
+  min-width: 14rem;
+  overflow-wrap: anywhere;
+}
+
+.page-admin-books .actions {
+  white-space: nowrap;
+}

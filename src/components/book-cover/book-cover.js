@@ -20,12 +20,13 @@ function createPlaceholder(decorative) {
 /**
  * A cover frame for a book: the cover image when it has one (and it loads), otherwise a placeholder icon.
  * - `decorative`: use when the title is shown next to it, so screen readers do not repeat it.
+ * - `url`: show this image instead of the stored cover (e.g. a local preview of a file the admin just picked).
  */
-export function createCover(coverPath, { alt = '', decorative = false } = {}) {
+export function createCover(coverPath, { alt = '', decorative = false, url: urlOverride } = {}) {
   const frame = document.createElement('div');
   frame.className = 'book-cover ratio';
 
-  const url = getCoverUrl(coverPath);
+  const url = urlOverride ?? getCoverUrl(coverPath);
   if (!url) {
     frame.append(createPlaceholder(decorative));
     return frame;

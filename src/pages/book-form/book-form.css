@@ -1,1 +1,9 @@
-/* Styles for the Add book page. Scope every rule under .page-book-form. */
+/* Add / edit book form. Every rule is scoped under .page-book-form. */
+.page-book-form .cover-preview {
+  max-width: 16rem;
+}
+
+/* The file input is validated by hand, so show its message under the control. */
+.page-book-form input[type='file'].is-invalid ~ .invalid-feedback {
+  display: block;
+}

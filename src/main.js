@@ -3,7 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './styles.css';
 import { mountHeader } from './components/header/header.js';
 import { mountFooter } from './components/footer/footer.js';
-import { enforceAccess, navigate, startRouter } from './router.js';
+import { canLeavePage, enforceAccess, navigate, startRouter } from './router.js';
 import { initToasts, showError, showSuccess } from './utils/toast.js';
 
 initToasts();
@@ -16,11 +16,12 @@ let auth = null;
 
 async function handleLogout() {
   if (!auth) return;
+  if (!(await canLeavePage())) return; // unsaved changes: ask before ending the session
   loggingOut = true;
   try {
     await auth.signOut();
     showSuccess('You have been signed out.');
-    navigate('/');
+    navigate('/', { force: true });
   } catch (error) {
     console.error('Sign out failed', error);
     showError('Could not sign out. Please try again.');

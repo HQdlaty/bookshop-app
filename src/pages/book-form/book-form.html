@@ -1,5 +1,89 @@
 <section class="page page-book-form container py-5">
-  <h1 class="h2 mb-3"><i class="bi bi-journal-plus me-2" aria-hidden="true"></i><span data-mode></span></h1>
-  <p class="lead text-body-secondary">Placeholder for the shared add/edit book form (with cover upload).</p>
-  <a href="/admin/books"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Back to books</a>
+  <div class="d-flex flex-wrap align-items-start justify-content-between gap-2 mb-4">
+    <div>
+      <h1 class="h2 mb-1"><i class="bi bi-journal-plus me-2" aria-hidden="true"></i><span data-heading></span></h1>
+      <p class="text-body-secondary mb-0" data-subheading></p>
+    </div>
+    <a class="btn btn-outline-secondary" href="/admin/books"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Back to books</a>
+  </div>
+
+  <div data-state></div>
+
+  <form data-form method="post" novalidate hidden>
+    <div data-alert-region role="alert"></div>
+
+    <div class="row g-4">
+      <div class="col-12 col-lg-8">
+        <div class="mb-3">
+          <label for="book-title" class="form-label">Title <span class="text-danger" aria-hidden="true">*</span></label>
+          <input id="book-title" name="title" type="text" class="form-control" autocomplete="off" required aria-describedby="book-title-error" />
+          <div id="book-title-error" class="invalid-feedback" data-error-for="title"></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="book-author" class="form-label">Author <span class="text-danger" aria-hidden="true">*</span></label>
+          <input id="book-author" name="author" type="text" class="form-control" autocomplete="off" required aria-describedby="book-author-error" />
+          <div id="book-author-error" class="invalid-feedback" data-error-for="author"></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="book-description" class="form-label">Description</label>
+          <textarea id="book-description" name="description" class="form-control" rows="6" aria-describedby="book-description-error"></textarea>
+          <div id="book-description-error" class="invalid-feedback" data-error-for="description"></div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-12 col-md-4">
+            <label for="book-isbn" class="form-label">ISBN</label>
+            <input id="book-isbn" name="isbn" type="text" class="form-control" autocomplete="off" aria-describedby="book-isbn-help book-isbn-error" />
+            <div id="book-isbn-help" class="form-text">Optional. 10 or 13 digits.</div>
+            <div id="book-isbn-error" class="invalid-feedback" data-error-for="isbn"></div>
+          </div>
+          <div class="col-6 col-md-4">
+            <label for="book-price" class="form-label">Price</label>
+            <input id="book-price" name="price" type="text" inputmode="decimal" class="form-control" autocomplete="off" aria-describedby="book-price-help book-price-error" />
+            <div id="book-price-help" class="form-text">Optional. For example 12.99</div>
+            <div id="book-price-error" class="invalid-feedback" data-error-for="price"></div>
+          </div>
+          <div class="col-6 col-md-4">
+            <label for="book-year" class="form-label">Published year</label>
+            <input id="book-year" name="year" type="text" inputmode="numeric" class="form-control" autocomplete="off" aria-describedby="book-year-help book-year-error" />
+            <div id="book-year-help" class="form-text">Optional. 1000 to 2100.</div>
+            <div id="book-year-error" class="invalid-feedback" data-error-for="year"></div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="book-category" class="form-label">Category</label>
+          <select id="book-category" name="category" class="form-select" aria-describedby="book-category-error">
+            <option value="">No category</option>
+          </select>
+          <div id="book-category-error" class="invalid-feedback" data-error-for="category"></div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-4">
+        <fieldset>
+          <legend class="form-label fs-6">Cover image</legend>
+          <div class="cover-preview mb-2" data-preview></div>
+          <p class="small text-body-secondary mb-2" data-preview-caption></p>
+          <input id="book-cover" name="cover" type="file" class="form-control" accept="image/jpeg,image/png,image/webp" aria-label="Choose a cover image" aria-describedby="book-cover-help book-cover-error" />
+          <div id="book-cover-help" class="form-text">JPEG, PNG or WebP, up to 2 MB.</div>
+          <div id="book-cover-error" class="invalid-feedback" data-error-for="cover"></div>
+          <button type="button" class="btn btn-sm btn-outline-secondary mt-2" data-clear-file hidden>Clear selected image</button>
+          <div class="form-check mt-2" data-remove-wrap hidden>
+            <input class="form-check-input" type="checkbox" id="book-remove-cover" name="removeCover" />
+            <label class="form-check-label" for="book-remove-cover">Remove the current cover</label>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+      <button type="submit" class="btn btn-primary" data-submit>
+        <span class="spinner-border spinner-border-sm me-2" aria-hidden="true" hidden></span><span data-label>Save book</span>
+      </button>
+      <a class="btn btn-outline-secondary" href="/admin/books">Cancel</a>
+    </div>
+  </form>
 </section>
