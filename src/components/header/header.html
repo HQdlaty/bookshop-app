@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" aria-label="Main navigation">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" href="/"><i class="bi bi-book-half me-2" aria-hidden="true"></i>Bookshop</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="main-nav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-house me-1" aria-hidden="true"></i>Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/books"><i class="bi bi-journal-bookmark me-1" aria-hidden="true"></i>Books</a></li>
+        <li class="nav-item"><a class="nav-link" href="/reviews"><i class="bi bi-chat-square-text me-1" aria-hidden="true"></i>Reviews</a></li>
+        <li class="nav-item dropdown">
+          <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-admin-toggle>
+            <i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Admin
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/admin" data-match="exact"><i class="bi bi-speedometer2 me-2" aria-hidden="true"></i>Dashboard</a></li>
+            <li><a class="dropdown-item" href="/admin/books"><i class="bi bi-journal-text me-2" aria-hidden="true"></i>Books</a></li>
+            <li><a class="dropdown-item" href="/admin/categories"><i class="bi bi-tags me-2" aria-hidden="true"></i>Categories</a></li>
+            <li><a class="dropdown-item" href="/admin/users"><i class="bi bi-people me-2" aria-hidden="true"></i>Users</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/profile"><i class="bi bi-person-circle me-1" aria-hidden="true"></i>Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="/login"><i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i>Log in</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

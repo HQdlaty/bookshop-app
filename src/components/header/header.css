@@ -1,0 +1,5 @@
+/* The toggle is a <button> styled as a nav link; reset the button chrome. */
+#site-header .navbar .dropdown-toggle.nav-link {
+  background: none;
+  border: 0;
+}
