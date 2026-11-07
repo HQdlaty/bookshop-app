@@ -1,7 +1,8 @@
 const APP_NAME = 'Bookshop';
 
 // Canonical routes. Pages are loaded lazily so each page's CSS and JS is fetched on demand.
-// access: 'private' routes need a session; anything else is public. (Role checks come later.)
+// access: 'private' routes need a session; 'admin' routes need a session AND the admin role; anything else is public.
+// The guard is a UX layer: RLS in the database is what actually protects the data.
 const routes = [
   { path: '/', load: () => import('./pages/home/home.js') },
   { path: '/books', load: () => import('./pages/books/books.js') },
@@ -9,15 +10,16 @@ const routes = [
   { path: '/login', load: () => import('./pages/login/login.js') },
   { path: '/profile', access: 'private', load: () => import('./pages/profile/profile.js') },
   { path: '/reviews', access: 'private', load: () => import('./pages/reviews/reviews.js') },
-  { path: '/admin', access: 'private', load: () => import('./pages/admin/admin.js') },
-  { path: '/admin/books', access: 'private', load: () => import('./pages/admin-books/admin-books.js') },
-  { path: '/admin/books/add', access: 'private', load: () => import('./pages/book-form/book-form.js') },
-  { path: '/admin/books/:id/edit', access: 'private', load: () => import('./pages/book-form/book-form.js') },
-  { path: '/admin/categories', access: 'private', load: () => import('./pages/admin-categories/admin-categories.js') },
-  { path: '/admin/users', access: 'private', load: () => import('./pages/admin-users/admin-users.js') },
+  { path: '/admin', access: 'admin', load: () => import('./pages/admin/admin.js') },
+  { path: '/admin/books', access: 'admin', load: () => import('./pages/admin-books/admin-books.js') },
+  { path: '/admin/books/add', access: 'admin', load: () => import('./pages/book-form/book-form.js') },
+  { path: '/admin/books/:id/edit', access: 'admin', load: () => import('./pages/book-form/book-form.js') },
+  { path: '/admin/categories', access: 'admin', load: () => import('./pages/admin-categories/admin-categories.js') },
+  { path: '/admin/users', access: 'admin', load: () => import('./pages/admin-users/admin-users.js') },
 ].map((route) => ({ ...route, ...compile(route.path) }));
 
 const loadNotFound = () => import('./pages/not-found/not-found.js');
+const loadNotAuthorized = () => import('./pages/not-authorized/not-authorized.js');
 
 function compile(path) {
   const keys = [];
@@ -49,9 +51,10 @@ let outlet = null;
 let onNavigate = () => {};
 let ready = Promise.resolve(); // resolves once the session has been restored
 let getSession = async () => null;
+let checkAdmin = async () => false;
 let current = null; // { unmount, controller } of the mounted page
 let renderId = 0; // guards against out-of-order async page loads
-let activeAccess = 'public'; // access level of the route being shown (or loading)
+let activeAccess = 'public'; // 'public' | 'private' | 'admin': access level of the route being shown (or loading)
 
 function teardown() {
   if (!current) return;
@@ -95,6 +98,15 @@ async function hasSession() {
   }
 }
 
+async function hasAdminRole() {
+  try {
+    return Boolean(await checkAdmin());
+  } catch (error) {
+    console.error('Could not check the admin role', error);
+    return false; // fail closed
+  }
+}
+
 // Sends the visitor to the login page and remembers where they were going.
 function redirectToLogin() {
   const returnTo = location.pathname + location.search;
@@ -110,18 +122,30 @@ async function render(pathname) {
   await ready;
   if (id !== renderId) return;
 
-  if (activeAccess === 'private') {
+  let loader = matched ? matched.route.load : loadNotFound;
+  let params = matched ? matched.params : {};
+
+  if (activeAccess !== 'public') {
     const signedIn = await hasSession();
     if (id !== renderId) return;
     if (!signedIn) {
       redirectToLogin();
       return;
     }
+    if (activeAccess === 'admin') {
+      const admin = await hasAdminRole();
+      if (id !== renderId) return;
+      if (!admin) {
+        // Signed in but not an admin: say so clearly instead of redirecting silently.
+        loader = loadNotAuthorized;
+        params = {};
+      }
+    }
   }
 
   let page;
   try {
-    page = await (matched ? matched.route.load() : loadNotFound());
+    page = await loader();
   } catch (error) {
     if (id !== renderId) return;
     console.error('Failed to load page', error);
@@ -138,7 +162,7 @@ async function render(pathname) {
   const controller = new AbortController();
   const ctx = {
     path: pathname,
-    params: matched ? matched.params : {},
+    params,
     query: new URLSearchParams(location.search),
     signal: controller.signal,
     navigate,
@@ -177,9 +201,16 @@ export function navigate(to, { replace = false } = {}) {
  * Call it when the signed-in user changes (e.g. the session expired or was ended in another tab).
  */
 export async function enforceAccess() {
-  if (activeAccess !== 'private') return;
+  if (activeAccess === 'public') return;
   const signedIn = await hasSession();
-  if (!signedIn && activeAccess === 'private') redirectToLogin();
+  if (activeAccess === 'public') return; // the user navigated away while we were checking
+  if (!signedIn) {
+    redirectToLogin();
+    return;
+  }
+  if (activeAccess !== 'admin') return;
+  const admin = await hasAdminRole();
+  if (!admin && activeAccess === 'admin') render(location.pathname); // shows the "Not authorized" page
 }
 
 function onClick(event) {
@@ -209,12 +240,14 @@ function onClick(event) {
  * - onNavigate(pathname): called after each page is shown
  * - ready: promise that resolves when the session has been restored (the first render waits for it)
  * - getSession(): async, returns the current session or null (used by the private-route guard)
+ * - isAdmin(): async, true when the current user is an admin (used by the admin-route guard)
  */
 export function startRouter(options) {
   outlet = options.outlet;
   onNavigate = options.onNavigate ?? onNavigate;
   ready = options.ready ?? ready;
   getSession = options.getSession ?? getSession;
+  checkAdmin = options.isAdmin ?? checkAdmin;
 
   document.addEventListener('click', onClick);
   window.addEventListener('popstate', () => render(location.pathname));

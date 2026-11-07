@@ -1,1 +1,5 @@
-/* Styles for the Admin page. Scope every rule under .page-admin. */
+/* Admin dashboard. Every rule is scoped under .page-admin. */
+.page-admin .card .btn:focus-visible {
+  outline: 3px solid var(--bs-primary);
+  outline-offset: 2px;
+}

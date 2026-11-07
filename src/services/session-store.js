@@ -1,10 +1,13 @@
 import { getSession, onAuthStateChange } from './auth-service.js';
 import { getProfileDisplayName } from './profiles-service.js';
+import { clearRoleCache } from './roles-service.js';
 
 // In-memory view of the signed-in user for the UI (header, guards). Nothing here is persisted:
 // the Supabase client keeps the session itself, and logging out clears everything below.
 
 const FALLBACK_NAME = 'Account';
+// Auth events that should make the UI re-check things like the admin role. (Token refreshes change nothing visible.)
+const NOTIFYING_EVENTS = new Set(['SIGNED_IN', 'SIGNED_OUT', 'USER_UPDATED']);
 
 let session = null;
 let displayName = null;
@@ -41,11 +44,16 @@ async function loadProfileName(userId) {
   }
 }
 
-function applySession(next) {
+function applySession(next, event) {
   const previousId = session?.user?.id ?? null;
   session = next;
   const id = next?.user?.id ?? null;
-  if (id === previousId) return; // e.g. a token refresh: nothing visible changes
+
+  if (id === previousId) {
+    // Same user: only tell listeners about events that can change what they show (e.g. role checks).
+    if (event && NOTIFYING_EVENTS.has(event)) notify();
+    return;
+  }
 
   // Show something immediately (signup metadata), then replace it with the profile's name.
   displayName = id ? (metadataName(next) ?? FALLBACK_NAME) : null;
@@ -59,9 +67,10 @@ function applySession(next) {
  */
 export function initSession() {
   readyPromise ??= (async () => {
-    onAuthStateChange((_event, next) => {
+    onAuthStateChange((event, next) => {
+      clearRoleCache(); // any auth state change invalidates the cached admin answer
       // Supabase can deadlock if its own methods are awaited inside this callback, so defer the work.
-      setTimeout(() => applySession(next), 0);
+      setTimeout(() => applySession(next, event), 0);
     });
     try {
       applySession(await getSession());

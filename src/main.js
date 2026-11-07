@@ -11,7 +11,7 @@ initToasts();
 // Set while logging out so the access check below does not bounce the user to /login
 // before we send them to the home page.
 let loggingOut = false;
-// { initSession, subscribeSession, getSession, signOut }, or null when Supabase is not configured.
+// { initSession, subscribeSession, getSession, signOut, isAdmin }, or null when Supabase is not configured.
 let auth = null;
 
 async function handleLogout() {
@@ -34,16 +34,26 @@ mountFooter(document.getElementById('site-footer'));
 
 // Loaded dynamically so a missing Supabase configuration shows a clear error instead of a blank page.
 async function loadAuth() {
-  const [store, service] = await Promise.all([
+  const [store, service, roles] = await Promise.all([
     import('./services/session-store.js'),
     import('./services/auth-service.js'),
+    import('./services/roles-service.js'),
   ]);
   return {
     initSession: store.initSession,
     subscribeSession: store.subscribeSession,
     getSession: service.getSession,
     signOut: service.signOut,
+    isAdmin: roles.isAdmin,
   };
+}
+
+// Shows the Admin menu only to admins. A newer check supersedes an older one that is still running.
+let adminCheck = 0;
+async function refreshAdminMenu(user) {
+  const check = ++adminCheck;
+  const admin = user && auth ? await auth.isAdmin() : false;
+  if (check === adminCheck) header.setAdmin(admin);
 }
 
 async function start() {
@@ -55,9 +65,10 @@ async function start() {
   }
 
   if (auth) {
-    // Signing out (or an expired session) clears the user from the header and from any private page.
+    // Logging in or out (or an expired session) updates the header and re-checks the page being shown.
     auth.subscribeSession(({ user, displayName }) => {
       header.setUser(user ? { displayName } : null);
+      refreshAdminMenu(user);
       if (!loggingOut) enforceAccess();
     });
   }
@@ -67,6 +78,7 @@ async function start() {
     onNavigate: (pathname) => header.setActive(pathname),
     ready: auth ? auth.initSession() : Promise.resolve(),
     getSession: auth ? auth.getSession : async () => null,
+    isAdmin: auth ? auth.isAdmin : async () => false,
   });
 }
 

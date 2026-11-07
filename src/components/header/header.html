@@ -9,7 +9,7 @@
         <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-house me-1" aria-hidden="true"></i>Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/books"><i class="bi bi-journal-bookmark me-1" aria-hidden="true"></i>Books</a></li>
         <li class="nav-item" data-auth="user" hidden><a class="nav-link" href="/reviews"><i class="bi bi-chat-square-text me-1" aria-hidden="true"></i>Reviews</a></li>
-        <!-- Admin menu stays hidden until role-based visibility is added with the admin guard. -->
+        <!-- Admin menu: only shown to admins (the header toggles it with setAdmin). -->
         <li class="nav-item dropdown" data-admin-only hidden>
           <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-admin-toggle>
             <i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Admin

@@ -1,4 +1,5 @@
 import { supabase } from './supabase-client.js';
+import { clearRoleCache } from './roles-service.js';
 
 // Thin wrappers over Supabase Auth. Passwords are only passed through to Supabase:
 // they are never stored, logged or put in a URL by this app.
@@ -25,7 +26,9 @@ export async function signIn(email, password) {
 }
 
 export async function signOut() {
+  clearRoleCache();
   const { error } = await supabase.auth.signOut();
+  clearRoleCache();
   if (error) throw error;
 }
 

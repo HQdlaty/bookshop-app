@@ -13,6 +13,7 @@ function isActive(link, pathname) {
  * Mounts the navbar. Returns:
  * - setActive(pathname): highlights the current page.
  * - setUser({ displayName } | null): switches between the guest ("Log in") and signed-in (name + "Log out") views.
+ * - setAdmin(boolean): shows or hides the Admin menu.
  * `onLogout` is called when the user picks "Log out".
  */
 export function mountHeader(container, { onLogout } = {}) {
@@ -22,6 +23,7 @@ export function mountHeader(container, { onLogout } = {}) {
   const adminToggle = container.querySelector('[data-admin-toggle]');
   const userToggle = container.querySelector('[data-user-toggle]');
   const nameElement = container.querySelector('[data-user-name]');
+  const adminItem = container.querySelector('[data-admin-only]');
   const guestItems = container.querySelectorAll('[data-auth="guest"]');
   const userItems = container.querySelectorAll('[data-auth="user"]');
   const menu = container.querySelector('#main-nav');
@@ -47,6 +49,10 @@ export function mountHeader(container, { onLogout } = {}) {
       }
       adminToggle.classList.toggle('active', path === '/admin' || path.startsWith('/admin/'));
       userToggle.classList.toggle('active', path === '/profile');
+    },
+
+    setAdmin(isAdmin) {
+      adminItem.hidden = !isAdmin;
     },
 
     setUser(user) {
