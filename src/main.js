@@ -67,8 +67,8 @@ async function start() {
 
   if (auth) {
     // Logging in or out (or an expired session) updates the header and re-checks the page being shown.
-    auth.subscribeSession(({ user, displayName }) => {
-      header.setUser(user ? { displayName } : null);
+    auth.subscribeSession(({ user, displayName, avatarUrl }) => {
+      header.setUser(user ? { displayName, avatarUrl } : null);
       refreshAdminMenu(user);
       if (!loggingOut) enforceAccess();
     });

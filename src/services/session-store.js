@@ -1,5 +1,5 @@
 import { getSession, onAuthStateChange } from './auth-service.js';
-import { getProfileDisplayName } from './profiles-service.js';
+import { getAvatarUrl, getProfileSummary } from './profile-service.js';
 import { clearRoleCache } from './roles-service.js';
 
 // In-memory view of the signed-in user for the UI (header, guards). Nothing here is persisted:
@@ -11,6 +11,7 @@ const NOTIFYING_EVENTS = new Set(['SIGNED_IN', 'SIGNED_OUT', 'USER_UPDATED']);
 
 let session = null;
 let displayName = null;
+let avatarPath = null;
 let readyPromise = null;
 const listeners = new Set();
 
@@ -20,7 +21,7 @@ function metadataName(current) {
 }
 
 function snapshot() {
-  return { session, user: session?.user ?? null, displayName };
+  return { session, user: session?.user ?? null, displayName, avatarPath, avatarUrl: getAvatarUrl(avatarPath) };
 }
 
 function notify() {
@@ -33,15 +34,29 @@ function notify() {
   }
 }
 
-async function loadProfileName(userId) {
+async function loadProfile(userId) {
   try {
-    const name = await getProfileDisplayName(userId);
-    if (session?.user?.id !== userId || !name || name === displayName) return; // signed out or switched meanwhile
-    displayName = name;
-    notify();
+    const profile = await getProfileSummary(userId);
+    if (session?.user?.id !== userId || !profile) return; // signed out or switched meanwhile
+    updateProfile({ displayName: profile.display_name, avatarPath: profile.avatar_path });
   } catch (error) {
     console.error('Could not load the profile', error);
   }
+}
+
+/** Tells the UI (header) about a profile change made on the profile page. Only given fields change. */
+export function updateProfile({ displayName: name, avatarPath: path } = {}) {
+  if (!session) return;
+  let changed = false;
+  if (name !== undefined && name && name !== displayName) {
+    displayName = name;
+    changed = true;
+  }
+  if (path !== undefined && (path ?? null) !== avatarPath) {
+    avatarPath = path ?? null;
+    changed = true;
+  }
+  if (changed) notify();
 }
 
 function applySession(next, event) {
@@ -57,8 +72,9 @@ function applySession(next, event) {
 
   // Show something immediately (signup metadata), then replace it with the profile's name.
   displayName = id ? (metadataName(next) ?? FALLBACK_NAME) : null;
+  avatarPath = null;
   notify();
-  if (id) loadProfileName(id);
+  if (id) loadProfile(id);
 }
 
 /**
@@ -82,7 +98,7 @@ export function initSession() {
   return readyPromise;
 }
 
-/** Calls `listener({ session, user, displayName })` whenever the signed-in user changes. Returns an unsubscribe function. */
+/** Calls `listener({ session, user, displayName, avatarPath, avatarUrl })` whenever the signed-in user changes. Returns an unsubscribe function. */
 export function subscribeSession(listener) {
   listeners.add(listener);
   return () => listeners.delete(listener);

@@ -1,1 +1,5 @@
-/* Styles for the Profile page. Scope every rule under .page-profile. */
+/* Profile page. Every rule is scoped under .page-profile. */
+/* The file input is validated by hand, so show its message under the control. */
+.page-profile input[type='file'].is-invalid ~ .invalid-feedback {
+  display: block;
+}

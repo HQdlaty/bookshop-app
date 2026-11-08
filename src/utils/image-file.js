@@ -1,4 +1,5 @@
 export const MAX_COVER_BYTES = 2 * 1024 * 1024; // matches the book-covers bucket limit
+export const MAX_AVATAR_BYTES = 1024 * 1024; // matches the avatars bucket limit
 export const COVER_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 const TYPE_LABELS = { 'image/jpeg': 'JPEG', 'image/png': 'PNG', 'image/webp': 'WebP' };
@@ -17,14 +18,18 @@ function formatMegabytes(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function formatLimit(bytes) {
+  return `${bytes / (1024 * 1024)} MB`;
+}
+
 /**
- * Checks a file the admin picked as a cover, in the browser (the bucket enforces the same limits on the server).
+ * Checks a picked image in the browser (the bucket enforces the same limits on the server).
  * Resolves { ok: true, type } or { ok: false, message }. `type` comes from the file's content, not its name.
  */
-export async function inspectCoverFile(file) {
+export async function inspectImageFile(file, maxBytes) {
   if (!file || file.size === 0) return { ok: false, message: 'The selected file is empty.' };
-  if (file.size > MAX_COVER_BYTES) {
-    return { ok: false, message: `The image must be 2 MB or smaller (this one is ${formatMegabytes(file.size)}).` };
+  if (file.size > maxBytes) {
+    return { ok: false, message: `The image must be ${formatLimit(maxBytes)} or smaller (this one is ${formatMegabytes(file.size)}).` };
   }
   if (!COVER_TYPES.includes(file.type)) return { ok: false, message: 'Use a JPEG, PNG or WebP image.' };
 
@@ -35,3 +40,6 @@ export async function inspectCoverFile(file) {
   }
   return { ok: true, type: sniffed };
 }
+
+export const inspectCoverFile = (file) => inspectImageFile(file, MAX_COVER_BYTES);
+export const inspectAvatarFile = (file) => inspectImageFile(file, MAX_AVATAR_BYTES);

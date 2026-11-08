@@ -15,10 +15,10 @@ export function toDbMessage(error) {
 }
 
 /** Like toDbMessage, with extra cases for Storage (upload / remove) errors. */
-export function toStorageMessage(error) {
+export function toStorageMessage(error, limit = '2 MB') {
   const status = String(error?.statusCode ?? error?.status ?? '');
   const message = String(error?.message ?? '');
-  if (status === '413' || /too large|exceeded the maximum/i.test(message)) return 'The image is too large. The limit is 2 MB.';
+  if (status === '413' || /too large|exceeded the maximum/i.test(message)) return `The image is too large. The limit is ${limit}.`;
   if (status === '415' || /mime|not supported/i.test(message)) return 'This image type is not allowed. Use JPEG, PNG or WebP.';
   if (status === '401' || status === '403' || /row-level security|unauthorized/i.test(message)) {
     return 'You do not have permission to upload images.';

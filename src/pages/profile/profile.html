@@ -1,4 +1,47 @@
 <section class="page page-profile container py-5">
-  <h1 class="h2 mb-3"><i class="bi bi-person-circle me-2" aria-hidden="true"></i>Your profile</h1>
-  <p class="lead text-body-secondary">Placeholder for the user profile and avatar.</p>
+  <h1 class="h2 mb-1"><i class="bi bi-person me-2" aria-hidden="true"></i>Your profile</h1>
+  <p class="text-body-secondary mb-4">Your display name and avatar are shown next to your reviews.</p>
+
+  <div data-state></div>
+
+  <div class="row g-4" data-content hidden>
+    <div class="col-12 col-md-5 col-lg-4">
+      <fieldset>
+        <legend class="form-label fs-6">Avatar</legend>
+        <div class="mb-2" data-avatar></div>
+        <p class="small text-body-secondary mb-2" data-avatar-caption></p>
+        <input id="profile-avatar" name="avatar" type="file" class="form-control" accept="image/jpeg,image/png,image/webp" aria-label="Choose an avatar image" aria-describedby="profile-avatar-help profile-avatar-error" />
+        <div id="profile-avatar-help" class="form-text">JPEG, PNG or WebP, up to 1 MB.</div>
+        <div id="profile-avatar-error" class="invalid-feedback" data-avatar-error></div>
+        <div class="d-flex flex-wrap gap-2 mt-2">
+          <button type="button" class="btn btn-primary btn-sm" data-upload hidden>
+            <span class="spinner-border spinner-border-sm me-1" aria-hidden="true" hidden></span><span data-upload-label>Upload avatar</span>
+          </button>
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-clear-file hidden>Cancel</button>
+          <button type="button" class="btn btn-outline-danger btn-sm" data-remove hidden><i class="bi bi-trash me-1" aria-hidden="true"></i>Remove avatar</button>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="col-12 col-md-7 col-lg-8">
+      <form data-form method="post" novalidate>
+        <div class="mb-3">
+          <label for="profile-name" class="form-label">Display name <span class="text-danger" aria-hidden="true">*</span></label>
+          <input id="profile-name" name="displayName" type="text" class="form-control" autocomplete="nickname" required aria-describedby="profile-name-error" />
+          <div id="profile-name-error" class="invalid-feedback" data-error-for="displayName"></div>
+        </div>
+        <button type="submit" class="btn btn-primary" data-submit>
+          <span class="spinner-border spinner-border-sm me-2" aria-hidden="true" hidden></span><span data-label>Save name</span>
+        </button>
+      </form>
+
+      <hr class="my-4" />
+
+      <dl class="mb-0">
+        <dt>Email</dt>
+        <dd class="mb-1 text-break" data-email></dd>
+        <dd class="small text-body-secondary mb-0">Only you can see your email address.</dd>
+      </dl>
+    </div>
+  </div>
 </section>

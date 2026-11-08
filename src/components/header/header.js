@@ -1,5 +1,6 @@
 import Collapse from 'bootstrap/js/dist/collapse.js';
 import 'bootstrap/js/dist/dropdown.js';
+import { createAvatar } from '../avatar/avatar.js';
 import html from './header.html?raw';
 import './header.css';
 
@@ -12,7 +13,7 @@ function isActive(link, pathname) {
 /**
  * Mounts the navbar. Returns:
  * - setActive(pathname): highlights the current page.
- * - setUser({ displayName } | null): switches between the guest ("Log in") and signed-in (name + "Log out") views.
+ * - setUser({ displayName, avatarUrl } | null): switches between the guest ("Log in") and signed-in (name + "Log out") views.
  * - setAdmin(boolean): shows or hides the Admin menu.
  * `onLogout` is called when the user picks "Log out".
  */
@@ -22,6 +23,7 @@ export function mountHeader(container, { onLogout } = {}) {
   const links = [...container.querySelectorAll('a.nav-link, a.dropdown-item')];
   const adminToggle = container.querySelector('[data-admin-toggle]');
   const userToggle = container.querySelector('[data-user-toggle]');
+  const avatarSlot = container.querySelector('[data-user-avatar]');
   const nameElement = container.querySelector('[data-user-name]');
   const adminItem = container.querySelector('[data-admin-only]');
   const guestItems = container.querySelectorAll('[data-auth="guest"]');
@@ -60,6 +62,11 @@ export function mountHeader(container, { onLogout } = {}) {
       guestItems.forEach((item) => (item.hidden = signedIn));
       userItems.forEach((item) => (item.hidden = !signedIn));
       nameElement.textContent = signedIn ? user.displayName : ''; // user content: textContent only
+      const avatarUrl = signedIn ? (user.avatarUrl ?? null) : null;
+      if (avatarSlot.dataset.url !== String(avatarUrl)) {
+        avatarSlot.dataset.url = String(avatarUrl);
+        avatarSlot.replaceChildren(createAvatar(avatarUrl, { size: '1.5rem' }));
+      }
     },
   };
 }
