@@ -33,3 +33,10 @@ export function toReviewMessage(error) {
   if (error?.code === '23514') return 'Your review could not be saved. Check the rating and text.';
   return toDbMessage(error);
 }
+
+/** Like toDbMessage, with the errors of the admin user functions. */
+export function toAdminUserMessage(error) {
+  if (error?.code === '22023') return 'You cannot change your own role.';
+  if (error?.code === 'P0002') return 'That user no longer exists.';
+  return toDbMessage(error);
+}

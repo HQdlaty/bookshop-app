@@ -1,4 +1,40 @@
 <section class="page page-admin-users container py-5">
-  <h1 class="h2 mb-3"><i class="bi bi-people me-2" aria-hidden="true"></i>Manage users</h1>
-  <p class="lead text-body-secondary">Placeholder for user and role management.</p>
+  <div class="d-flex flex-wrap align-items-start justify-content-between gap-2 mb-4">
+    <div>
+      <h1 class="h2 mb-1"><i class="bi bi-people me-2" aria-hidden="true"></i>Manage users</h1>
+      <p class="text-body-secondary mb-0">Search users and change who is an admin.</p>
+    </div>
+    <a class="btn btn-outline-secondary" href="/admin"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Dashboard</a>
+  </div>
+
+  <form class="row g-2 mb-3" role="search" data-search-form novalidate>
+    <div class="col-12 col-md-6">
+      <label for="user-search" class="visually-hidden">Search by name or email</label>
+      <div class="input-group">
+        <span class="input-group-text" aria-hidden="true"><i class="bi bi-search"></i></span>
+        <input id="user-search" name="search" type="search" class="form-control" placeholder="Search by name or email" autocomplete="off" maxlength="100" />
+      </div>
+    </div>
+  </form>
+
+  <p class="text-body-secondary small mb-2" data-summary role="status"></p>
+  <div data-status></div>
+
+  <div class="table-responsive" data-table-wrap hidden>
+    <table class="table table-hover align-middle">
+      <caption class="visually-hidden">Users</caption>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Role</th>
+          <th scope="col">Joined</th>
+          <th scope="col">Change role</th>
+        </tr>
+      </thead>
+      <tbody data-rows></tbody>
+    </table>
+  </div>
+
+  <div class="mt-4" data-pagination></div>
 </section>

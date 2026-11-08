@@ -1,1 +1,19 @@
-/* Styles for the Manage users page. Scope every rule under .page-admin-users. */
+/* Admin users page. Every rule is scoped under .page-admin-users. */
+.page-admin-users td.email {
+  overflow-wrap: anywhere;
+  min-width: 12rem;
+}
+
+.page-admin-users td.name {
+  overflow-wrap: anywhere;
+  min-width: 8rem;
+}
+
+.page-admin-users .role-select {
+  min-width: 7rem;
+}
+
+/* A disabled control swallows mouse events, so let the wrapper (which owns the tooltip) receive them. */
+.page-admin-users .role-select:disabled {
+  pointer-events: none;
+}
