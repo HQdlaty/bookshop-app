@@ -166,10 +166,11 @@ export function mount(container, ctx) {
       setAlert(
         infoRegion,
         'info',
-        `Almost there! Check your inbox at ${email.trim()} for a confirmation link, then come back and log in.`,
+        `Account created. Please verify your email: we sent a confirmation link to ${email.trim()}. Open it to activate your account, then log in.`,
       );
+      // Stay on the Register tab so the message stays visible; prefill the login form for later.
       loginForm.elements.email.value = email.trim();
-      Tab.getOrCreateInstance(container.querySelector('#tab-login')).show();
+      infoRegion.scrollIntoView?.({ block: 'nearest' });
     },
   });
 
