@@ -39,6 +39,14 @@ export async function getSession() {
   return data.session;
 }
 
+/** The signed-in user's id. Throws a session-expired style error when nobody is signed in. */
+export async function requireUserId() {
+  const session = await getSession();
+  const userId = session?.user?.id;
+  if (!userId) throw Object.assign(new Error('No session'), { code: 'PGRST301' });
+  return userId;
+}
+
 /** Subscribes to auth changes. Returns an unsubscribe function. */
 export function onAuthStateChange(callback) {
   const { data } = supabase.auth.onAuthStateChange((event, session) => callback(event, session));

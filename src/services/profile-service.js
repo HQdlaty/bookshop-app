@@ -1,5 +1,5 @@
 import { supabase } from './supabase-client.js';
-import { getSession } from './auth-service.js';
+import { requireUserId } from './auth-service.js';
 import { requireAffected } from './service-errors.js';
 
 export const AVATAR_BUCKET = 'avatars';
@@ -11,13 +11,6 @@ const COLUMNS = 'id, display_name, avatar_path';
 export function getAvatarUrl(path) {
   if (!path) return null;
   return supabase.storage.from(AVATAR_BUCKET).getPublicUrl(path).data.publicUrl;
-}
-
-async function requireUserId() {
-  const session = await getSession();
-  const userId = session?.user?.id;
-  if (!userId) throw Object.assign(new Error('No session'), { code: 'PGRST301' });
-  return userId;
 }
 
 /** { id, display_name, avatar_path } for any user id, or null if there is no such profile. Used by the session store. */

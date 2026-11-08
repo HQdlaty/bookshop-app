@@ -2,6 +2,7 @@ import html from './book-details.html?raw';
 import './book-details.css';
 import { createCover } from '../../components/book-cover/book-cover.js';
 import { getBook } from '../../services/books-service.js';
+import { mountReviews } from './reviews-section.js';
 import { toDbMessage } from '../../utils/db-errors.js';
 import { formatPrice } from '../../utils/format.js';
 
@@ -94,6 +95,20 @@ export function mount(container, ctx) {
 
     ctx.setTitle(book.title);
     article.hidden = false;
+
+    mountReviews({
+      bookId: book.id,
+      signal: ctx.signal,
+      initialPage: Number(ctx.query.get('reviews')) || 1,
+      els: {
+        rating: field('rating-summary'),
+        count: field('review-count'),
+        composer: field('review-composer'),
+        status: field('review-status'),
+        list: field('review-list'),
+        pagination: field('review-pagination'),
+      },
+    });
   }
 
   async function load() {

@@ -10,7 +10,8 @@
       <div class="col-12 col-sm-5 col-md-4" data-cover></div>
       <div class="col">
         <h1 class="h2 mb-1" data-title></h1>
-        <p class="lead text-body-secondary mb-3" data-author></p>
+        <p class="lead text-body-secondary mb-2" data-author></p>
+        <p class="mb-3" data-rating-summary></p>
         <p class="mb-3" data-category-wrap hidden><span class="badge text-bg-secondary fs-6 fw-normal text-wrap" data-category></span></p>
 
         <dl class="row mb-4">
@@ -31,11 +32,15 @@
 
     <hr class="my-5" />
 
-    <section aria-labelledby="reviews-title">
-      <h2 id="reviews-title" class="h4 mb-3"><i class="bi bi-chat-square-text me-2" aria-hidden="true"></i>Reviews</h2>
-      <div class="border rounded text-center text-body-secondary p-4" data-reviews>
-        Reviews will appear here soon.
+    <section aria-labelledby="reviews-title" data-reviews-section>
+      <div class="d-flex flex-wrap align-items-baseline justify-content-between gap-2 mb-3">
+        <h2 id="reviews-title" class="h4 mb-0"><i class="bi bi-chat-square-text me-2" aria-hidden="true"></i>Reviews</h2>
+        <span class="text-body-secondary" data-review-count></span>
       </div>
+      <div class="mb-4" data-review-composer></div>
+      <div data-review-status></div>
+      <ul class="list-unstyled d-grid gap-3 mb-0" data-review-list></ul>
+      <div class="mt-4" data-review-pagination></div>
     </section>
   </article>
 </section>

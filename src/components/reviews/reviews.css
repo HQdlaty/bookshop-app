@@ -1,0 +1,56 @@
+/* Shared review UI: star display, star input, review form and review cards. */
+.stars {
+  display: inline-flex;
+  gap: 0.1rem;
+  color: var(--bs-warning);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.star-input {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.star-input .star-options {
+  display: inline-flex;
+  gap: 0.15rem;
+}
+
+.star-input label {
+  cursor: pointer;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--bs-warning);
+  padding: 0.1rem;
+  border-radius: 0.25rem;
+}
+
+/* Keyboard focus lands on the visually hidden radio, so show the ring on its label. */
+.star-input input:focus-visible + label {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 2px;
+}
+
+.review-form textarea {
+  resize: vertical;
+}
+
+.review-form .invalid-feedback.is-shown {
+  display: block;
+}
+
+.review {
+  overflow-wrap: anywhere;
+}
+
+.review .review-body {
+  white-space: pre-line; /* keep the line breaks the author typed */
+  margin-bottom: 0;
+}
+
+.review .review-name {
+  min-width: 0;
+}

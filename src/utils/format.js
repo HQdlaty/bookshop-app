@@ -8,3 +8,16 @@ export function formatPrice(value) {
 }
 
 export const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' });
+
+/** An ISO timestamp as "Nov 8, 2026". Returns '' for anything that is not a valid date. */
+export function formatDate(value) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? '' : dateFormatter.format(date);
+}
+
+/** 4.25 -> "4.3". Returns '' when there is no value. */
+export function formatAverage(value) {
+  return Number.isFinite(value) ? value.toFixed(1) : '';
+}

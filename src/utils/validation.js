@@ -117,3 +117,18 @@ export function validatePublishedYear(value) {
   const year = Number(text);
   return year >= YEAR_MIN && year <= YEAR_MAX ? '' : `Enter a year between ${YEAR_MIN} and ${YEAR_MAX}.`;
 }
+
+// ----- reviews -----
+export const REVIEW_BODY_MAX = 2000;
+
+export function validateRating(value) {
+  const rating = Number(value);
+  return Number.isInteger(rating) && rating >= 1 && rating <= 5 ? '' : 'Choose a rating from 1 to 5 stars.';
+}
+
+export function validateReviewBody(value) {
+  const body = value.trim();
+  if (!body) return 'Write something about the book.';
+  if (Array.from(body).length > REVIEW_BODY_MAX) return `Your review must be at most ${REVIEW_BODY_MAX} characters.`;
+  return '';
+}

@@ -25,3 +25,11 @@ export function toStorageMessage(error, limit = '2 MB') {
   }
   return toDbMessage(error);
 }
+
+/** Like toDbMessage, with the review-specific database errors. */
+export function toReviewMessage(error) {
+  if (error?.code === '23505') return 'You have already reviewed this book.';
+  if (error?.code === '23503') return 'This book no longer exists.';
+  if (error?.code === '23514') return 'Your review could not be saved. Check the rating and text.';
+  return toDbMessage(error);
+}
