@@ -50,7 +50,7 @@ export function mountHeader(container, { onLogout } = {}) {
         else link.removeAttribute('aria-current');
       }
       adminToggle.classList.toggle('active', path === '/admin' || path.startsWith('/admin/'));
-      userToggle.classList.toggle('active', path === '/profile');
+      userToggle.classList.toggle('active', path === '/profile' || path.startsWith('/profile/'));
     },
 
     setAdmin(isAdmin) {

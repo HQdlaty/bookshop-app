@@ -1,0 +1,4 @@
+/* My reviews page. Every rule is scoped under .page-my-reviews. */
+.page-my-reviews .review-edit-title {
+  overflow-wrap: anywhere;
+}

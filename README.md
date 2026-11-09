@@ -54,7 +54,7 @@ Pages (routes):
 | `/books/:id` | public | Book details (cover, author, category, price, year, ISBN, description) with the rating summary and a paginated list of reviews (10 per page, newest first); signed-in users can write, edit or delete their review here; admins can delete any review |
 | `/login` | public | Log in and register (two tabs); returns you to the page you were trying to open |
 | `/profile` | signed in | Change display name, upload or remove an avatar, see your email |
-| `/reviews` | signed in | "My reviews": your own reviews across books, with edit and delete |
+| `/profile/reviews` | signed in | "My reviews": your own reviews across books, with edit and delete (in the user menu) |
 | `/admin` | admin | Dashboard with the number of books and categories and links to the admin pages |
 | `/admin/books` | admin | Paginated book table with edit and delete (deleting a book also removes its reviews and its cover file) |
 | `/admin/books/add` | admin | Add a book form: title, author, description, ISBN, price, published year, category, cover image |

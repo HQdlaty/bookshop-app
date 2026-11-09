@@ -1,5 +1,5 @@
-import html from './reviews.html?raw';
-import './reviews.css';
+import html from './my-reviews.html?raw';
+import './my-reviews.css';
 import { createPagination } from '../../components/pagination/pagination.js';
 import { createReviewForm } from '../../components/reviews/review-form.js';
 import { createReviewItem } from '../../components/reviews/review-item.js';
@@ -173,7 +173,7 @@ export function mount(container, ctx) {
       const pagination = createPagination({
         page: result.page,
         totalPages: result.totalPages,
-        hrefFor: (n) => (n > 1 ? `/reviews?page=${n}` : '/reviews'),
+        hrefFor: (n) => (n > 1 ? `/profile/reviews?page=${n}` : '/profile/reviews'),
       });
       if (pagination) paginationEl.append(pagination);
     } catch (error) {

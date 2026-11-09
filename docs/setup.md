@@ -108,7 +108,7 @@ It does not create books. Add the books first, in the app.
     │   ├── book-details/       /books/:id (with reviews-section.js)
     │   ├── login/              /login (log in and register)
     │   ├── profile/            /profile
-    │   ├── reviews/            /reviews (my reviews)
+    │   ├── my-reviews/         /profile/reviews (my reviews)
     │   ├── admin/              /admin (dashboard)
     │   ├── admin-books/        /admin/books
     │   ├── book-form/          /admin/books/add and /admin/books/:id/edit
