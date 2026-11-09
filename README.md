@@ -79,6 +79,7 @@ Other behaviour:
 
 ## Documentation
 
+- [Setup guide](docs/setup.md): run it locally, create a Supabase project, apply the migrations, create the first admin, project structure, known limitations
 - [Architecture](docs/architecture.md): client and server split, router, services, auth and roles, storage uploads, admin functions, deployment
 - [Database](docs/database.md): tables and relationships (ER diagram), RLS policies, storage buckets, functions and triggers, migrations
 - [Security checks](docs/security-checks.md): the permission checks run against the database
