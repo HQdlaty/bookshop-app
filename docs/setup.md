@@ -76,6 +76,8 @@ DEMO_ADMIN_EMAIL=... DEMO_ADMIN_PASSWORD=... node --env-file=.env scripts/seed-c
 
 It does not create books. Add the books first, in the app.
 
+`scripts/seed-demo-content.mjs` adds demo categories, books and reviews through the same API (books as the demo admin, each review as its own user). It reads the admin and demo-user credentials from environment variables and extra reviewers from repeated `DEMO_USER2_EMAIL` / `DEMO_USER2_PASSWORD` lines in `.env`; see the comment at the top of the file. It can be run again safely: books and reviews that already exist are skipped. Run `seed-covers.mjs` afterwards to give the new books covers.
+
 ## Project structure
 
 ```
