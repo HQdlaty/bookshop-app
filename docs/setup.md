@@ -93,7 +93,6 @@ It does not create books. Add the books first, in the app.
 ├── index.html                  Single HTML shell (header, main outlet, footer)
 ├── package.json                Scripts and dependencies (Vite, Bootstrap, Bootstrap Icons, supabase-js)
 ├── wrangler.jsonc              Cloudflare Workers static assets: serves dist/ with SPA fallback
-├── netlify.toml                Equivalent build and rewrite settings for Netlify
 ├── .env.example                The two client variables, empty
 ├── CLAUDE.md                   Instructions for the AI assistant used on this project
 ├── .github/

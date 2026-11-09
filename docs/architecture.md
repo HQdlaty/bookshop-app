@@ -125,5 +125,4 @@ Both functions use `set search_path = ''`, so every object they use is schema-qu
 
 - `npm run build` runs `vite build` and writes the static site to `dist/`. The two `VITE_` variables are read at build time and compiled into the JavaScript, so they must be present in the environment that runs the build.
 - `wrangler.jsonc` configures Cloudflare Workers static assets: it serves the `./dist` directory and sets `not_found_handling` to `single-page-application`, so a request for a path such as `/books/123` that is not a file returns `index.html` and the client router takes over.
-- The repository also contains a `netlify.toml` (build command, publish directory `dist`, and a catch-all rewrite to `/index.html`). It describes the same idea for Netlify; the hosting described by `wrangler.jsonc` is the one used for the live site.
 - Database changes are SQL migrations in `supabase/migrations/`, applied to the Supabase project separately from the front-end deployment.
