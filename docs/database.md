@@ -143,7 +143,7 @@ In `supabase/migrations/`, applied in this order:
 |---|---|
 | `20261107185726_initial_schema.sql` | `app_role` enum; tables `profiles`, `user_roles`, `categories`, `books`, `reviews`; indexes; functions and triggers; backfill of profiles and roles for users that already existed; all RLS policies |
 | `20261107185744_storage_buckets.sql` | The `book-covers` and `avatars` buckets and their `storage.objects` policies |
-| `20261107190515_revoke_rls_auto_enable_api_access.sql` | Revokes execute on `public.rls_auto_enable()` from `public`, `anon` and `authenticated`. According to the migration's comment this is an event-trigger function (`ensure_rls`) that exists in the hosted project and is not created by these migration files |
+| `20261107190515_revoke_rls_auto_enable_api_access.sql` | Revokes execute on `public.rls_auto_enable()` from `public`, `anon` and `authenticated`, only if that function exists (checked with `to_regprocedure`), so the step is skipped on a project without it. According to the migration's comment this is an event-trigger function (`ensure_rls`) that exists in the hosted project and is not created by these migration files |
 | `20261108124819_admin_user_functions.sql` | `admin_list_users` and `admin_set_user_role` with their privileges |
 
 The project rule is that every schema change is saved as a SQL migration in this folder.
