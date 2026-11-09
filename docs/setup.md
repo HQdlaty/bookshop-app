@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) and npm. The repository's `netlify.toml` builds with Node 22.
+- [Node.js](https://nodejs.org/) 22 or newer (the deployed build uses 22) and npm.
 - Git
 - A [Supabase](https://supabase.com/) account (a free project is enough)
 
@@ -40,12 +40,20 @@ If a variable is missing, the app shows a "Sign-in is unavailable because the ap
    2. `20261107185744_storage_buckets.sql`: the `book-covers` and `avatars` buckets and their policies
    3. `20261107190515_revoke_rls_auto_enable_api_access.sql`: revokes execute on `public.rls_auto_enable()`
    4. `20261108124819_admin_user_functions.sql`: `admin_list_users` and `admin_set_user_role`
-3. Put the project URL and publishable key in `.env` (above).
+3. Set the Supabase Auth settings (next section).
+4. Put the project URL and publishable key in `.env` (above).
+
+### Supabase Auth settings
+
+Both settings are in the Supabase dashboard, under Authentication:
+
+- **Confirm email: turn it off** (Providers, Email). With it on, an account cannot sign in until its email is confirmed, so the demo accounts cannot sign in. The app itself handles both settings: with it on, it shows a "verify your email" notice after registering.
+- **Site URL and Redirect URLs** (URL Configuration): set the Site URL to the deployed address, `https://bookshop-app.marwineli.workers.dev`, and add that address and the local dev address, `http://localhost:5173` (Vite's default dev port), to the Redirect URLs. Use your own addresses if you deploy somewhere else.
 
 Notes:
 
 - The third migration revokes privileges on `public.rls_auto_enable()`, a function that these files do not create (see [database.md](database.md)). PostgreSQL reports an error when revoking on a function that does not exist, so if your project has no such function that one file will fail; it only tightens a permission and the other migrations do not depend on it.
-- Email confirmation is a Supabase Auth setting of the project. The app works with it on (it shows a "verify your email" notice after registering) or off (the user is signed in at once).
+- Email confirmation is a Supabase Auth setting of the project; see "Supabase Auth settings" above for the value this guide uses.
 
 ## Create the first admin
 
