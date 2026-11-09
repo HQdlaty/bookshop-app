@@ -8,6 +8,7 @@ const routes = [
   { path: '/books', load: () => import('./pages/books/books.js') },
   { path: '/books/:id', load: () => import('./pages/book-details/book-details.js') },
   { path: '/login', load: () => import('./pages/login/login.js') },
+  { path: '/reviews', load: () => import('./pages/reviews/reviews.js') },
   { path: '/profile', access: 'private', load: () => import('./pages/profile/profile.js') },
   { path: '/profile/reviews', access: 'private', load: () => import('./pages/my-reviews/my-reviews.js') },
   { path: '/admin', access: 'admin', load: () => import('./pages/admin/admin.js') },

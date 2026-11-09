@@ -12,7 +12,7 @@ Architecture:
 - Never commit secrets. Client env is only VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY. Any service-role key lives only in a gitignored local .env used by scripts/.
 - Render user content safely (textContent, never raw innerHTML).
 
-Canonical routes: /  /books  /books/:id  /login  /profile  /profile/reviews  /admin  /admin/books  /admin/books/add  /admin/books/:id/edit  /admin/categories  /admin/users
+Canonical routes: /  /books  /books/:id  /login  /profile  /profile/reviews  /reviews  /admin  /admin/books  /admin/books/add  /admin/books/:id/edit  /admin/categories  /admin/users
 
 Planned tables: profiles, categories, books, reviews, user_roles.
 Roles: user and admin via user_roles + an is_admin() helper that avoids recursive RLS. Role assignment must never come from signup metadata.

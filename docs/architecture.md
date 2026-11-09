@@ -58,7 +58,7 @@ All Supabase calls are in `src/services/`; pages never import the Supabase clien
 | `session-store.js` | In-memory view of the signed-in user (display name, avatar) for the header; listeners are notified on sign-in, sign-out and profile changes |
 | `books-service.js` | List (search, category filter, pagination), get, create, update, delete books |
 | `categories-service.js` | List, count, create, rename, delete categories |
-| `reviews-service.js` | List a book's reviews, list my reviews, review statistics, create, update, delete |
+| `reviews-service.js` | List a book's reviews, list all reviews, list my reviews, review statistics, create, update, delete |
 | `profile-service.js` | Own profile, display name and avatar upload/removal |
 | `storage-service.js` | Book cover upload and removal |
 | `admin-users-service.js` | `admin_list_users` and `admin_set_user_role` RPC calls |

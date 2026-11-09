@@ -45,6 +45,11 @@ export async function listReviews(bookId, page = 1) {
   return pageOf((query) => query.eq('book_id', bookId), COLUMNS, page);
 }
 
+/** One page of every review on every book (10 per page, newest first), each with its book's id and title. Public. */
+export async function listAllReviews(page = 1) {
+  return pageOf((query) => query, LIST_COLUMNS, page);
+}
+
 /** One page of the signed-in user's own reviews, each with its book's id and title. */
 export async function listMyReviews(page = 1) {
   const userId = await requireUserId();

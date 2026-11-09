@@ -20,7 +20,7 @@ It is a single-page app written in vanilla JavaScript (ES modules). Supabase pro
 | | Visitor (not signed in) | User | Admin |
 |---|---|---|---|
 | Browse, search and filter books; open a book | yes | yes | yes |
-| Read reviews and reviewer names/avatars | yes | yes | yes |
+| Read reviews (per book, and on the `/reviews` page) and reviewer names/avatars | yes | yes | yes |
 | Register and log in | yes | n/a | n/a |
 | Edit own display name and avatar | no | yes | yes |
 | Write a review (one per book), edit or delete own review | no | yes | yes |
@@ -53,6 +53,7 @@ Pages (routes):
 | `/books` | public | Paginated book grid (12 per page); search by title or author; filter by category; filters and page are kept in the URL |
 | `/books/:id` | public | Book details (cover, author, category, price, year, ISBN, description) with the rating summary and a paginated list of reviews (10 per page, newest first); signed-in users can write, edit or delete their review here; admins can delete any review |
 | `/login` | public | Log in and register (two tabs); returns you to the page you were trying to open |
+| `/reviews` | public | All reviews on all books in one list (10 per page, newest first), each linking to its book; admins can delete other users' reviews here |
 | `/profile` | signed in | Change display name, upload or remove an avatar, see your email |
 | `/profile/reviews` | signed in | "My reviews": your own reviews across books, with edit and delete (in the user menu) |
 | `/admin` | admin | Dashboard with the number of books and categories and links to the admin pages |

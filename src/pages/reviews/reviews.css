@@ -1,0 +1,4 @@
+/* All reviews page. Every rule is scoped under .page-reviews. */
+.page-reviews .review-body {
+  overflow-wrap: anywhere;
+}
