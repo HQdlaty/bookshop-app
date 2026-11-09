@@ -7,7 +7,7 @@
 | **GitHub Repo** | https://github.com/HQdlaty/bookshop-app |
 | **Live Project URL** | https://bookshop-app.marwineli.workers.dev/ |
 | **Sample credentials** | `admin@bookshop.demo` / `demo1234` (admin) |
-| | `user@bookshop.demo` / `demo1234` (regular user) |
+| | `user@bookshop.demo` / `user1234` (regular user) |
 
 ## Description
 
